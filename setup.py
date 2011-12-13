@@ -19,6 +19,8 @@ setup(
     package_dir = {'': 'src'},
     
     install_requires = ['setuptools'],
+    requires = ['netaddr'],
+    #tests_requires = ['django'],
 
     classifiers = [
         'Development Status :: 4 - Beta',
