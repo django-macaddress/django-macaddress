@@ -1,0 +1,7 @@
+django-macaddress
+================
+
+MAC Address model and form fields for Django
+
+Patches welcome: http://github.com/tubaman/django-macaddress
+
