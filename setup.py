@@ -10,7 +10,7 @@ setup(
     url = 'http://github.com/tubaman/django-macaddress',
     license = 'BSD',
     description = "MAC address model and form fields for Django apps.",
-    long_description = read('README'),
+    long_description = read('README.rst'),
 
     author = 'Ryan Nowakowski',
     author_email = 'tubaman@fattuba.com',
