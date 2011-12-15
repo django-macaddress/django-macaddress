@@ -14,9 +14,8 @@ setup(
     author = 'Ryan Nowakowski',
     author_email = 'tubaman@fattuba.com',
     packages = ['macaddress'],
-    install_requires = ['setuptools'],
-    requires = ['netaddr'],
-    #tests_requires = ['django'],
+    install_requires = ['netaddr'],
+    tests_require = ['django'],
 
     classifiers = [
         'Development Status :: 4 - Beta',
