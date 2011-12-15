@@ -11,13 +11,9 @@ setup(
     license = 'BSD',
     description = "MAC address model and form fields for Django apps.",
     long_description = read('README.rst'),
-
     author = 'Ryan Nowakowski',
     author_email = 'tubaman@fattuba.com',
-
-    packages = find_packages('src'),
-    package_dir = {'': 'src'},
-    
+    packages = ['macaddress'],
     install_requires = ['setuptools'],
     requires = ['netaddr'],
     #tests_requires = ['django'],
