@@ -18,6 +18,7 @@ class mac_linux(mac_unix):
 
 
 class MACAddressField(models.Field):
+    description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     __metaclass__ = models.SubfieldBase
 
