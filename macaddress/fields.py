@@ -5,6 +5,13 @@ from netaddr import EUI, AddrFormatError, mac_unix
 
 from formfields import MACAddressField as MACAddressFormField
 
+# monkey patch EUI to work around https://github.com/drkjam/netaddr/issues/21
+# we need this if we use unique=True
+def _eui_deepcopy(obj, memo=None):
+    from copy import copy
+    return copy(obj)
+EUI.__deepcopy__ = _eui_deepcopy
+
 class mac_linux(mac_unix):
     """MAC format with zero-padded all upper-case hex and colon separated"""
     word_fmt = '%.2X'
