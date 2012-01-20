@@ -51,6 +51,6 @@ class MACAddressField(models.Field):
 
 try:
     from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^mfg\.mac\.fields\.MACAddressField"])
+    add_introspection_rules([], ["^macaddress\.fields\.MACAddressField"])
 except ImportError:
     pass
