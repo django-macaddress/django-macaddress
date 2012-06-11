@@ -25,7 +25,7 @@ class MACAddressField(models.Field):
     def __init__(self, *args, **kwargs):
         super(MACAddressField, self).__init__(*args, **kwargs)
 
-    def get_db_prep_value(self, value):
+    def get_prep_value(self, value):
         if value is None:
             return None
         if not isinstance(value, EUI):
