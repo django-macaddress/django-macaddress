@@ -21,6 +21,9 @@ class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     __metaclass__ = models.SubfieldBase
+    
+    def __init__(self, *args, **kwargs):
+        super(MACAddressField, self).__init__(*args, **kwargs)
 
     def get_db_prep_value(self, value):
         if value is None:
