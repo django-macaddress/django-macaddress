@@ -22,7 +22,7 @@ class MACAddressField(models.Field):
     empty_strings_allowed = False
     __metaclass__ = models.SubfieldBase
 
-    def get_db_prep_value(self, value):
+    def get_prep_value(self, value):
         if value is None:
             return None
         if not isinstance(value, EUI):
