@@ -41,7 +41,10 @@ class MACAddressField(models.Field):
     def get_prep_lookup(self, lookup_type, value):
         # data is stored internally as integer so searching as string
         # yeild 0 result. for example: useful for search in admin.
-        return self.get_prep_value(value)
+        if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
+            return self.get_prep_value(value)
+        else:
+            raise TypeError('Lookup type %r not supported.' % lookup_type)
 
 try:
     from south.modelsinspector import add_introspection_rules
