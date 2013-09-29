@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from netaddr import EUI, AddrFormatError, mac_unix
+from netaddr import EUI, AddrFormatError, mac_eui48
 
 from formfields import MACAddressField as MACAddressFormField
 
@@ -11,10 +11,6 @@ def _eui_deepcopy(obj, memo=None):
     from copy import copy
     return copy(obj)
 EUI.__deepcopy__ = _eui_deepcopy
-
-class mac_linux(mac_unix):
-    """MAC format with zero-padded all upper-case hex and colon separated"""
-    word_fmt = '%.2X'
 
 
 class MACAddressField(models.Field):
@@ -26,7 +22,7 @@ class MACAddressField(models.Field):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            return int(EUI(value, dialect=mac_linux))
+            return int(EUI(value, dialect=mac_eui48))
         return int(value)
 
     def get_internal_type(self):
@@ -36,10 +32,10 @@ class MACAddressField(models.Field):
         if value is None:
             return value
         if isinstance(value, EUI):
-            value.dialect = mac_linux
+            value.dialect = mac_eui48
             return value
         try:
-            return EUI(value, dialect=mac_linux)
+            return EUI(value, dialect=mac_eui48)
         except (TypeError, ValueError, AddrFormatError):
             raise ValidationError(
                 "This value must be a valid MAC address.")
