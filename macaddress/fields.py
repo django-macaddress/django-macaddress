@@ -38,6 +38,11 @@ class MACAddressField(models.Field):
         defaults.update(kwargs)
         return super(MACAddressField, self).formfield(**defaults)
 
+    def get_prep_lookup(self, lookup_type, value):
+        # data is stored internally as integer so searching as string
+        # yeild 0 result. for example: useful for search in admin.
+        return self.get_prep_value(value)
+
 try:
     from south.modelsinspector import add_introspection_rules
     add_introspection_rules([], ["^macaddress\.fields\.MACAddressField"])
