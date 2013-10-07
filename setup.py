@@ -14,7 +14,7 @@ setup(
     author = 'Ryan Nowakowski',
     author_email = 'tubaman@fattuba.com',
     maintainer = 'Arun K. R.',
-    maintainer_mail = 'the1.arun@gmail.com',
+    maintainer_email = 'the1.arun@gmail.com',
     packages = ['macaddress'],
     install_requires = ['netaddr'],
     tests_require = ['django'],

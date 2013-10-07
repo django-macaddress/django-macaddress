@@ -45,7 +45,7 @@ class MACAddressField(models.Field):
             try:
                 return self.get_prep_value(value)
             except AddrFormatError, e:
-                raise TypeError('Lookup currently support only full & valid MACs')
+                return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
 
