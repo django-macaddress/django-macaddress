@@ -42,7 +42,10 @@ class MACAddressField(models.Field):
         # data is stored internally as integer so searching as string
         # yeild 0 result. for example: useful for search in admin.
         if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
-            return self.get_prep_value(value)
+            try:
+                return self.get_prep_value(value)
+            except AddrFormatError, e:
+                raise TypeError('Lookup currently support only full & valid MACs')
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
 
