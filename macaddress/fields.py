@@ -21,12 +21,22 @@ class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     __metaclass__ = models.SubfieldBase
+    dialect = mac_linux # a default dialect
+
+    @classmethod
+    def set_dialect(cls, new_dialect_clazz):
+        ''' Setting dialect for EUI (MAC addresses) globally to this Field
+        class.
+        Class new_dialect_clazz should (finally) extend
+        netaddr.strategy.eui48.mac_eui48.
+        '''
+        cls.dialect = new_dialect_clazz
 
     def get_prep_value(self, value):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            return int(EUI(value, dialect=mac_linux))
+            return int(EUI(value, dialect=MACAddressField.dialect))
         return int(value)
 
     def get_internal_type(self):
@@ -36,10 +46,10 @@ class MACAddressField(models.Field):
         if value is None:
             return value
         if isinstance(value, EUI):
-            value.dialect = mac_linux
+            value.dialect = MACAddressField.dialect
             return value
         try:
-            return EUI(value, dialect=mac_linux)
+            return EUI(value, dialect=MACAddressField.dialect)
         except (TypeError, ValueError, AddrFormatError):
             raise ValidationError(
                 "This value must be a valid MAC address.")
