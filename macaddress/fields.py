@@ -1,20 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from netaddr import EUI, AddrFormatError, mac_unix
+from netaddr import EUI, AddrFormatError, mac_eui48
 
 from formfields import MACAddressField as MACAddressFormField
-
-# monkey patch EUI to work around https://github.com/drkjam/netaddr/issues/21
-# we need this if we use unique=True
-def _eui_deepcopy(obj, memo=None):
-    from copy import copy
-    return copy(obj)
-EUI.__deepcopy__ = _eui_deepcopy
-
-class mac_linux(mac_unix):
-    """MAC format with zero-padded all upper-case hex and colon separated"""
-    word_fmt = '%.2X'
 
 
 class MACAddressField(models.Field):
@@ -26,7 +15,7 @@ class MACAddressField(models.Field):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            return int(EUI(value, dialect=mac_linux))
+            return int(EUI(value, dialect=mac_eui48))
         return int(value)
 
     def get_internal_type(self):
@@ -36,10 +25,10 @@ class MACAddressField(models.Field):
         if value is None:
             return value
         if isinstance(value, EUI):
-            value.dialect = mac_linux
+            value.dialect = mac_eui48
             return value
         try:
-            return EUI(value, dialect=mac_linux)
+            return EUI(value, dialect=mac_eui48)
         except (TypeError, ValueError, AddrFormatError):
             raise ValidationError(
                 "This value must be a valid MAC address.")
@@ -48,6 +37,17 @@ class MACAddressField(models.Field):
         defaults = {'form_class': MACAddressFormField}
         defaults.update(kwargs)
         return super(MACAddressField, self).formfield(**defaults)
+
+    def get_prep_lookup(self, lookup_type, value):
+        # data is stored internally as integer so searching as string
+        # yeild 0 result. for example: useful for search in admin.
+        if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
+            try:
+                return self.get_prep_value(value)
+            except AddrFormatError, e:
+                raise TypeError('Lookup currently support only full & valid MACs')
+        else:
+            raise TypeError('Lookup type %r not supported.' % lookup_type)
 
 try:
     from south.modelsinspector import add_introspection_rules
