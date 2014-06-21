@@ -3,3 +3,7 @@
 build
 ctags
 cscope.*
+/.project
+/.pydevproject
+/dist
+/django_macaddress.egg-info
