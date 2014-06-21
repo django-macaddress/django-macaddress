@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "django-macaddress",
-    version = "1.1.0",
+    version = "1.2.0",
     url = 'http://github.com/tubaman/django-macaddress',
     license = 'BSD',
     description = "MAC address model and form fields for Django apps.",
