@@ -1,12 +1,14 @@
 import os
 from setuptools import setup, find_packages
 
+version = 1.2.0
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name = "django-macaddress",
-    version = "1.2.0",
+    version = version,
     url = 'http://github.com/tubaman/django-macaddress',
     license = 'BSD',
     description = "MAC address model and form fields for Django apps.",
