@@ -1,8 +1,12 @@
 from django.conf import settings
 
-from netaddr import mac_eui48, mac_unix
+from netaddr import mac_unix
 
 import importlib
+
+class mac_linux(mac_unix):
+    """MAC format with zero-padded all upper-case hex and colon separated"""
+    word_fmt = '%.2X'
 
 def default_dialect(eui_obj=None):
     # Check to see if a default dialect class has been specified in settings, 
@@ -11,13 +15,13 @@ def default_dialect(eui_obj=None):
     # __init__.py if the module is a package.
     if hasattr(settings, 'MACADDRESS_DEFAULT_DIALECT'):
         module, dialect_cls = settings.MACADDRESS_DEFAULT_DIALECT.split('.')
-        dialect = getattr(importlib.import_module(module), dialect_cls, mac_eui48)
+        dialect = getattr(importlib.import_module(module), dialect_cls, mac_linux)
         return dialect
     else:
         if eui_obj:
             return eui_obj.dialect
         else:
-            return mac_eui48
+            return mac_linux
 
 def format_mac(eui_obj, dialect):
     # Format a EUI instance as a string using the supplied dialect class, allowing custom string classes by 
@@ -30,7 +34,3 @@ def format_mac(eui_obj, dialect):
             dialect = getattr(importlib.import_module(module), dialect_cls)
     eui_obj.dialect = dialect
     return str(eui_obj)
-
-class mac_linux(mac_unix):
-    """MAC format with zero-padded all upper-case hex and colon separated"""
-    word_fmt = '%.2X'
