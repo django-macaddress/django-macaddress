@@ -44,3 +44,9 @@ def format_mac(eui_obj, dialect):
             dialect = getattr(importlib.import_module(module), dialect_cls)
     eui_obj.dialect = dialect
     return str(eui_obj)
+
+
+import pkg_resources
+
+__version__ = pkg_resources.get_distribution("macaddress").version
+VERSION = __version__   # synonym
