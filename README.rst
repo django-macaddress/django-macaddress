@@ -16,13 +16,102 @@ complete yet.
 
 Patches welcome: http://github.com/tubaman/django-macaddress
 
+Release Notes:
+**************
 
-Changing dialect for MAC Address representation
------------------------------------------------
+v1.3
+----
++ Added the option to store MAC Addresses in the database as strings, based on a 
+  an initialization argument (see documentation, below).
++ Added support for defining a default EUI dialect class (netaddr built-in, 
+  or custom) to ``settings.py`` as the ``MACADDRESS_DEFAULT_DIALECT`` variable (see 
+  documentation, below).
++ Added a utility function, ``format_mac`` to return the stored MAC Address as a string formatted using 
+  any provided subclass of ``netaddr.eui_48`` (see example below).
 
-By default, our mac_linux representation for MAC Address is used.
-You can use some other available in python (or even create a new one) by setting
-it: ``MACAddressField.set_dialect(your_dialect_clazz)``.
 
-For more on python's representation of MAC Addresses, check:
-http://pythonhosted.org/netaddr/tutorial_02.html#formatting
+Getting Started
+***************
+
+settings.MACADDRESS_DEFAULT_DIALECT
+-----------------------------------
+To specify a default dialect for presentation (and storage, see below), specify::
+    
+    settings.MACADDRESS_DEFAULT_DIALECT = 'module.dialect_class'
+
+where the specified value is a string composed of a parent python module name 
+and the child dialect class name. For example::
+
+    settings.MACADDRESS_DEFAULT_DIALECT = 'netaddr.mac_eui48'
+
+If the custom dialect is defined in a package module, you will need to define the 
+class in or import into the package's ``__init__.py``.
+
+``default_dialect`` and ``format_mac``
+--------------------------------------
+To get the default dialect for your project, import and call the ``default_dialect`` function::
+
+    >>> from macaddress import default_dialect
+    
+    >>> dialect = default_dialect()
+    
+This function may, optionally, be called with an ``netaddr.EUI`` class instance as its argument. If no
+default is defined in ``settings``, it will return the dialect of the provided ``EUI`` object.
+
+The ``format_mac`` function takes an ``EUI`` instance and a dialect class (``netaddr.mac_eui48`` or a 
+subclass) as its arguments. The dialect class may be specified as a string in the same manner as 
+``settings.MACADDRESS_DEFAULT_DIALECT``::
+    
+    >>> from netaddr import EUI, mac_bare
+    >>> from macaddress import format_mac
+
+    >>> mac = EUI('00:12:3c:37:64:8f')
+    >>> format_mac(mac, mac_bare)
+    '00123C37648F'
+    >>> format_mac(mac, 'netaddr.mac_cisco')
+    '0012.3c37.648f'
+    
+MACAddressField (ModelField)
+----------------------------
+This is an example model using MACAddressField::
+    
+    from macaddress.fields import MACAddressField
+    
+    class Computer(models.Model):
+        name = models.CharField(max_length=32)
+        eth0 = MACAddressField(null=True, blank=True)
+        ...
+    
+The default behavior is to store the MAC Address in the database is a BigInteger. 
+If you would, rather, store the value as a string (to, for instance, facilitate 
+sub-string searches), you can specify ``integer=False`` and the value will be stored
+as a string::
+
+    class Computer(models.Model):
+        name = models.CharField(max_length=32)
+        eth0 = MACAddressField(blank=True, integer=False)
+        ...
+
+If you want to set ``unique=True`` on a MACAddressField that is stored as a string, you will need 
+to set ``null=True`` and create custom ``clean_<foo>`` methods on your ``forms.ModelForm`` class for 
+each MACAddressField that return ``None`` when the value provided is an ``''`` (empty string)::
+
+    from .models import Computer
+    
+    class ComputerForm(forms.ModelForm):
+        class Meta:
+            model = Computer
+        
+        def clean_eth0(self):
+            return self.cleaned_data['eth0'] or None
+        
+You should avoid changing the value of ``integer`` after running ``managy.py syncdb``, 
+unless you are using a schema migration solution like South or Django's built-in migrations.
+
+
+To Do
+*****
+
++ Add greater support for partial string queries when storing MACs as strings in the database.
++ Add custom validator to check for duplicate MACs when mixing string and integer storage types.
++ Add deprecation warning and timeline for changeover to default string storage.
