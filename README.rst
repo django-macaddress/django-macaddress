@@ -44,6 +44,8 @@ and the child dialect class name. For example::
 
     settings.MACADDRESS_DEFAULT_DIALECT = 'netaddr.mac_eui48'
 
+PS: old default of macaddress.mac_linux (uppercase and divided by ':' ) will be used by default.
+
 If the custom dialect is defined in a package module, you will need to define the 
 class in or import into the package's ``__init__.py``.
 
