@@ -20,7 +20,16 @@ class MACAddressField(models.Field):
         if not self.integer: # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
             kwargs['max_length'] = kwargs.get('max_length', 17)
         super(MACAddressField, self).__init__(*args, **kwargs)
-    
+
+
+    def deconstruct(self):
+        ''' Django 1.7 migrations require this method
+            https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#field-deconstruction
+        '''
+        name, path, args, kwargs = super(MACAddressField, self).deconstruct()
+        kwargs['integer'] = self.integer
+        return name, path, args, kwargs
+
     @classmethod
     def set_dialect(cls, new_dialect_clazz):
         ''' Setting dialect for EUI (MAC addresses) globally to this Field
