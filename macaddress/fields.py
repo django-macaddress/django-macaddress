@@ -86,7 +86,7 @@ class MACAddressField(models.Field):
         if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
             try:
                 return self.get_prep_value(value)
-            except AddrFormatError, e:
+            except AddrFormatError:
                 return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
