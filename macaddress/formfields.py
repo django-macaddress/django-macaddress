@@ -1,4 +1,10 @@
-from django.forms import Field, util
+import django
+if django.VERSION[1] >  7:
+    #"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
+    from django.forms import Field, utils
+else :
+    from django.forms import Field, util
+    
 from django.forms.fields import EMPTY_VALUES
 
 from netaddr import EUI, AddrFormatError
