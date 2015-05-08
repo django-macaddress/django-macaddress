@@ -15,8 +15,8 @@ class MACAddressField(models.Field):
     __metaclass__ = models.SubfieldBase
     dialect = None
     
-    def __init__(self, integer=True, *args, **kwargs): # Custom __init__ to accept new "integer" boolean argument to support specification of string or integer storage. Defaults to True (for now).
-        self.integer = integer
+    def __init__(self, *args, **kwargs):
+        self.integer = kwargs.pop('integer', True)
         if not self.integer: # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
             kwargs['max_length'] = kwargs.get('max_length', 17)
         super(MACAddressField, self).__init__(*args, **kwargs)
