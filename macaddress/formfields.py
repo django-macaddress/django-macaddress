@@ -1,11 +1,10 @@
-import django
-if django.VERSION[1] >  7:
-    #"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
-    from django.forms import Field, utils
-else :
-    from django.forms import Field, util
-    
+from django.forms import Field
 from django.forms.fields import EMPTY_VALUES
+#"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
+try:
+    from django.forms.utils import ValidationError
+except ImportError:
+    from django.forms.util import ValidationError
 
 from netaddr import EUI, AddrFormatError
 
@@ -26,7 +25,7 @@ class MACAddressField(Field):
         try:
             value = EUI(str(value))
         except (ValueError, TypeError, AddrFormatError):
-            raise util.ValidationError(self.error_messages['invalid'])
+            raise ValidationError(self.error_messages['invalid'])
         return value
 
 
