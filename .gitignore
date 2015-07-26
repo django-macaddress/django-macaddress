@@ -1,5 +1,6 @@
 *.pyc
 *.pyo
+*.swp
 build
 ctags
 cscope.*
@@ -7,3 +8,5 @@ cscope.*
 /.pydevproject
 /dist
 /django_macaddress.egg-info
+.eggs
+.tox/
