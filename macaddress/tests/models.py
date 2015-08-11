@@ -2,7 +2,7 @@
 A model for testing
 """
 from django.db import models
-from fields import MACAddressField
+from macaddress.fields import MACAddressField
 
 class NetworkThingy(models.Model):
     mac = MACAddressField()

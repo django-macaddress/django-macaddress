@@ -20,6 +20,7 @@ setup(
     packages = ['macaddress'],
     install_requires = ['netaddr'],
     tests_require = ['django'],
+    test_suite="runtests.runtests",
 
     classifiers = [
         'Development Status :: 5 - Production/Stable',

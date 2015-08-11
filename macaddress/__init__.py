@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from netaddr import mac_eui48, mac_unix
+from netaddr import mac_unix, mac_eui48
 
 import importlib
 import warnings
@@ -10,9 +10,9 @@ class mac_linux(mac_unix):
     word_fmt = '%.2X'
 
 def default_dialect(eui_obj=None):
-    # Check to see if a default dialect class has been specified in settings, 
-    # using 'module.dialect_cls' string and use importlib and getattr to retrieve dialect class. 'module' is the module and 
-    # 'dialect_cls' is the class name of the custom dialect. The dialect must either be defined or imported by the module's 
+    # Check to see if a default dialect class has been specified in settings,
+    # using 'module.dialect_cls' string and use importlib and getattr to retrieve dialect class. 'module' is the module and
+    # 'dialect_cls' is the class name of the custom dialect. The dialect must either be defined or imported by the module's
     # __init__.py if the module is a package.
     from .fields import MACAddressField # Remove import at v1.4
     if hasattr(settings, 'MACADDRESS_DEFAULT_DIALECT') and not MACAddressField.dialect:
@@ -34,9 +34,9 @@ def default_dialect(eui_obj=None):
             return mac_linux
 
 def format_mac(eui_obj, dialect):
-    # Format a EUI instance as a string using the supplied dialect class, allowing custom string classes by 
+    # Format a EUI instance as a string using the supplied dialect class, allowing custom string classes by
     # passing directly or as a string, a la 'module.dialect_cls', where 'module' is the module and 'dialect_cls'
-    # is the class name of the custom dialect. The dialect must either be defined or imported by the module's __init__.py if 
+    # is the class name of the custom dialect. The dialect must either be defined or imported by the module's __init__.py if
     # the module is a package.
     if not isinstance(dialect, mac_eui48):
         if isinstance(dialect, str):
