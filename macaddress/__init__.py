@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from netaddr import mac_unix
+from netaddr import mac_eui48, mac_unix
 
 import importlib
 import warnings
