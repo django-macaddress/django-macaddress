@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = "1.3.1"
+version = "1.3.2"
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
