@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.six import with_metaclass
 
 from netaddr import EUI, AddrFormatError
 
@@ -8,11 +9,10 @@ from .formfields import MACAddressField as MACAddressFormField
 from . import default_dialect, format_mac, mac_linux
 
 import warnings
-                 
-class MACAddressField(models.Field):
+
+class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
-    __metaclass__ = models.SubfieldBase
     dialect = None
     
     def __init__(self, *args, **kwargs):
