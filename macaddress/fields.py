@@ -1,6 +1,7 @@
+import django
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.six import with_metaclass
+from django.utils.six import add_metaclass
 
 from netaddr import EUI, AddrFormatError
 
@@ -10,7 +11,7 @@ from . import default_dialect, format_mac, mac_linux
 
 import warnings
 
-class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
+class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     dialect = None
@@ -21,6 +22,8 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
             kwargs['max_length'] = kwargs.get('max_length', 17)
         super(MACAddressField, self).__init__(*args, **kwargs)
 
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
 
     def deconstruct(self):
         ''' Django 1.7 migrations require this method
@@ -90,6 +93,9 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
                 return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
+
+if django.VERSION < (1, 8):
+    MACAddressField = add_metaclass(models.SubfieldBase)(MACAddressField)
 
 try:
     from south.modelsinspector import add_introspection_rules
