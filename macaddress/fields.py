@@ -88,6 +88,14 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
                 return self.get_prep_value(value)
             except AddrFormatError:
                 return None
+        elif lookup_type in ('in'):
+            try:
+                macs = []
+                for mac in value:
+                    macs += [self.get_prep_value(mac)]
+                return macs
+            except AddrFormatError:
+                return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
 
