@@ -49,7 +49,7 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            value = EUI(value, dialect=default_dialect())
+            value = EUI(value, version=48, dialect=default_dialect())
             if self.integer:
                 return int(value)
             return str(value)
@@ -70,7 +70,7 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
             value.dialect = default_dialect(value)
             return value
         try:
-            return EUI(value, dialect=default_dialect())
+            return EUI(value, version=48, dialect=default_dialect())
         except (TypeError, ValueError, AddrFormatError):
             raise ValidationError(
                 "This value must be a valid MAC address.")
