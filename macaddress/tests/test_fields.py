@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.db import transaction
 
 from netaddr.core import AddrFormatError
 
@@ -23,8 +24,9 @@ class MACAddressFieldTestCase(TestCase):
 
     def test_insert_invalid_macaddress(self):
         invalid_mac = 'XX'
-        x = self.model()
-        with self.assertRaises(ValidationError):
-            x.mac = invalid_mac
-            x.save()
+        with transaction.atomic():
+            x = self.model()
+            with self.assertRaises(ValidationError):
+                x.mac = invalid_mac
+                x.save()
         self.assertEquals(NetworkThingy.objects.all().count(), 0)
