@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.six import with_metaclass
 
 from netaddr import EUI, AddrFormatError
 
@@ -10,7 +9,7 @@ from . import default_dialect, format_mac, mac_linux
 
 import warnings
 
-class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
+class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     dialect = None
@@ -62,6 +61,9 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
         if self.integer:
             return 'BigIntegerField'
         return 'CharField'
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
             
     def to_python(self, value):
         if value is None:
