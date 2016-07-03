@@ -1,3 +1,4 @@
+import django
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -100,6 +101,10 @@ class MACAddressField(models.Field):
                 return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
+
+if django.VERSION < (1, 8):
+    from django.utils.six import add_metaclass
+    MACAddressField = add_metaclass(models.SubfieldBase)(MACAddressField)
 
 try:
     from south.modelsinspector import add_introspection_rules
