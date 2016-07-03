@@ -48,7 +48,7 @@ class MACAddressField(models.Field):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            value = EUI(value, version=48, dialect=default_dialect())
+            value = self.to_python(value)
             if self.integer:
                 return int(value)
             return str(value)
