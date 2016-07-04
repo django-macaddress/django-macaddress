@@ -1,6 +1,6 @@
+import django
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.six import with_metaclass
 
 from netaddr import EUI, AddrFormatError
 
@@ -10,7 +10,7 @@ from . import default_dialect, format_mac, mac_linux
 
 import warnings
 
-class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
+class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     dialect = None
@@ -49,7 +49,7 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            value = EUI(value, dialect=default_dialect())
+            value = self.to_python(value)
             if self.integer:
                 return int(value)
             return str(value)
@@ -62,6 +62,9 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
         if self.integer:
             return 'BigIntegerField'
         return 'CharField'
+
+    def from_db_value(self, value, expression, connection, context):
+        return self.to_python(value)
             
     def to_python(self, value):
         if value is None:
@@ -70,7 +73,7 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
             value.dialect = default_dialect(value)
             return value
         try:
-            return EUI(value, dialect=default_dialect())
+            return EUI(value, version=48, dialect=default_dialect())
         except (TypeError, ValueError, AddrFormatError):
             raise ValidationError(
                 "This value must be a valid MAC address.")
@@ -98,6 +101,10 @@ class MACAddressField(with_metaclass(models.SubfieldBase, models.Field)):
                 return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
+
+if django.VERSION < (1, 8):
+    from django.utils.six import add_metaclass
+    MACAddressField = add_metaclass(models.SubfieldBase)(MACAddressField)
 
 try:
     from south.modelsinspector import add_introspection_rules

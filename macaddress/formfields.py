@@ -23,7 +23,7 @@ class MACAddressField(Field):
         if value in EMPTY_VALUES:
             return None
         try:
-            value = EUI(str(value))
+            value = EUI(str(value), version=48)
         except (ValueError, TypeError, AddrFormatError):
             raise ValidationError(self.error_messages['invalid'])
         return value
