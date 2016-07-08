@@ -17,7 +17,7 @@ setup(
     author_email = 'tubaman@fattuba.com',
     maintainer = 'Arun K. R.',
     maintainer_email = 'the1.arun@gmail.com',
-    packages = ['macaddress'],
+    packages = ['macaddress', 'macaddress.tests'],
     install_requires = ['netaddr'],
     tests_require = ['django'],
     test_suite="runtests.runtests",
