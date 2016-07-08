@@ -19,15 +19,7 @@ Patches welcome: http://github.com/django-macaddress/django-macaddress
 Release Notes:
 **************
 
-v1.3
-----
-+ Added the option to store MAC Addresses in the database as strings, based on a 
-  an initialization argument (see documentation, below).
-+ Added support for defining a default EUI dialect class (netaddr built-in, 
-  or custom) to ``settings.py`` as the ``MACADDRESS_DEFAULT_DIALECT`` variable (see 
-  documentation, below).
-+ Added a utility function, ``format_mac`` to return the stored MAC Address as a string formatted using 
-  any provided subclass of ``netaddr.eui_48`` (see example below).
+For release info: https://github.com/django-macaddress/django-macaddress/releases
 
 
 Getting Started
