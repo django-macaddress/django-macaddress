@@ -19,7 +19,7 @@ setup(
     maintainer_email = 'the1.arun@gmail.com',
     packages = ['macaddress', 'macaddress.tests'],
     install_requires = ['netaddr'],
-    tests_require = ['django'],
+    tests_require = ['Django'],
     test_suite="runtests.runtests",
 
     classifiers = [
