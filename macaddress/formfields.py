@@ -1,5 +1,6 @@
 from django.forms import Field
 from django.forms.fields import EMPTY_VALUES
+from django.utils.translation import ugettext_lazy as _
 #"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
 try:
     from django.forms.utils import ValidationError
@@ -11,7 +12,7 @@ from netaddr import EUI, AddrFormatError
 
 class MACAddressField(Field):
     default_error_messages = {
-        'invalid': 'Enter a valid MAC Address.',
+        'invalid': _('Enter a valid MAC Address.'),
     }
 
     def clean(self, value):
