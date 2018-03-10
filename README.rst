@@ -4,9 +4,9 @@ django-macaddress
 .. image:: https://api.travis-ci.org/django-macaddress/django-macaddress.png?branch=master
    :alt: Build Status
    :target: https://travis-ci.org/django-macaddress/django-macaddress
-.. image:: https://pypip.in/v/django-macaddress/badge.png
+.. image:: https://img.shields.io/pypi/v/django-macaddress.svg
    :target: https://crate.io/packages/django-macaddress
-.. image:: https://pypip.in/d/django-macaddress/badge.png
+.. image:: https://img.shields.io/pypi/dm/django-macaddress.svg
    :target: https://crate.io/packages/django-macaddress
 
 MAC Address model and form fields for Django
