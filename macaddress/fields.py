@@ -14,7 +14,7 @@ class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
     dialect = None
-    
+
     def __init__(self, *args, **kwargs):
         self.integer = kwargs.pop('integer', True)
         if not self.integer: # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
@@ -44,7 +44,7 @@ class MACAddressField(models.Field):
             DeprecationWarning,
         )
         cls.dialect = new_dialect_clazz
-    
+
     def get_prep_value(self, value):
         if value is None:
             return None
@@ -57,15 +57,16 @@ class MACAddressField(models.Field):
         if self.integer:
             return int(value)
         return str(value)
-    
+
     def get_internal_type(self):
         if self.integer:
             return 'BigIntegerField'
         return 'CharField'
 
-    def from_db_value(self, value, expression, connection, context):
+    # @todo: remove context parameter when facing out django < 2.0 support
+    def from_db_value(self, value, expression, connection, context=None):
         return self.to_python(value)
-            
+
     def to_python(self, value):
         if value is None:
             return value
