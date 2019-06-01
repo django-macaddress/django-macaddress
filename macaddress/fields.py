@@ -63,9 +63,12 @@ class MACAddressField(models.Field):
             return 'BigIntegerField'
         return 'CharField'
 
-    # @todo: remove context parameter when facing out django < 2.0 support
-    def from_db_value(self, value, expression, connection, context=None):
-        return self.to_python(value)
+    if django.VERSION < (2, 0):
+        def from_db_value(self, value, expression, connection, context=None):
+            return self.to_python(value)
+    else:
+        def from_db_value(self, value, expression, connection):
+            return self.to_python(value)
 
     def to_python(self, value):
         if value is None:
