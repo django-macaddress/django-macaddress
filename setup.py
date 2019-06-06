@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-version = "1.5.0"
+version = "1.6.0"
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -15,7 +15,7 @@ setup(
     long_description = read('README.rst'),
     author = 'Ryan Nowakowski',
     author_email = 'tubaman@fattuba.com',
-    maintainer = 'Arun K. R.',
+    maintainer = 'Arun Karunagath',
     maintainer_email = 'the1.arun@gmail.com',
     packages = ['macaddress', 'macaddress.tests'],
     install_requires = ['netaddr'],
