@@ -1,5 +1,5 @@
 django-macaddress
-================
+==================
 
 .. image:: https://travis-ci.org/django-macaddress/django-macaddress.svg?branch=master
    :alt: Build Status
