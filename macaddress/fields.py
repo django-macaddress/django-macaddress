@@ -89,7 +89,7 @@ class MACAddressField(models.Field):
 
     def get_prep_lookup(self, lookup_type, value):
         # data is stored internally as integer so searching as string
-        # yeild 0 result. for example: useful for search in admin.
+        # yield 0 result. for example: useful for search in admin.
         if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
             try:
                 return self.get_prep_value(value)
