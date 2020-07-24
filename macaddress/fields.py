@@ -63,12 +63,8 @@ class MACAddressField(models.Field):
             return 'BigIntegerField'
         return 'CharField'
 
-    if django.VERSION < (2, 0):
-        def from_db_value(self, value, expression, connection, context=None):
-            return self.to_python(value)
-    else:
-        def from_db_value(self, value, expression, connection):
-            return self.to_python(value)
+    def from_db_value(self, value, expression, connection):
+        return self.to_python(value)
 
     def to_python(self, value):
         if value is None:
@@ -79,8 +75,7 @@ class MACAddressField(models.Field):
         try:
             return EUI(value, version=48, dialect=default_dialect())
         except (TypeError, ValueError, AddrFormatError):
-            raise ValidationError(
-                "This value must be a valid MAC address.")
+            raise ValidationError("This value must be a valid MAC address.")
 
     def formfield(self, **kwargs):
         defaults = {'form_class': MACAddressFormField}
@@ -105,13 +100,3 @@ class MACAddressField(models.Field):
                 return None
         else:
             raise TypeError('Lookup type %r not supported.' % lookup_type)
-
-if django.VERSION < (1, 8):
-    from django.utils.six import add_metaclass
-    MACAddressField = add_metaclass(models.SubfieldBase)(MACAddressField)
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^macaddress\.fields\.MACAddressField"])
-except ImportError:
-    pass
