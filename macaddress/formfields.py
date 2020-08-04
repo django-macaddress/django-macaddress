@@ -1,5 +1,5 @@
 from django.forms import Field
-from django.forms.fields import EMPTY_VALUES
+from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
 #"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
 try:
