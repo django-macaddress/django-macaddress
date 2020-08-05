@@ -1,5 +1,5 @@
+from django.core.validators import EMPTY_VALUES
 from django.forms import Field
-from django.forms.fields import EMPTY_VALUES
 from django.forms.utils import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
