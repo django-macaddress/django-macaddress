@@ -1,11 +1,7 @@
+from django.core.validators import EMPTY_VALUES
 from django.forms import Field
-from django.forms.fields import EMPTY_VALUES
+from django.forms.utils import ValidationError
 from django.utils.translation import ugettext_lazy as _
-#"From Django 1.8: The django.forms.util module has been renamed. Use django.forms.utils instead."
-try:
-    from django.forms.utils import ValidationError
-except ImportError:
-    from django.forms.util import ValidationError
 
 from netaddr import EUI, AddrFormatError
 
