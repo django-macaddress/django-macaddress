@@ -12,3 +12,10 @@ install:
   - pip install tox-travis
 
 script: tox
+
+deploy:
+  provider: pypi
+  edge: true
+  on:
+    branch: master
+    tags: true
