@@ -1,6 +1,7 @@
 import django
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.lookups import IContains, Contains
 
 from netaddr import EUI, AddrFormatError
 
@@ -10,6 +11,7 @@ from . import default_dialect, format_mac, mac_linux
 
 import warnings
 
+
 class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
     empty_strings_allowed = False
@@ -17,10 +19,10 @@ class MACAddressField(models.Field):
 
     def __init__(self, *args, **kwargs):
         self.integer = kwargs.pop('integer', True)
-        if not self.integer: # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
+        # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
+        if not self.integer:
             kwargs['max_length'] = kwargs.get('max_length', 17)
         super(MACAddressField, self).__init__(*args, **kwargs)
-
 
     def deconstruct(self):
         ''' Django 1.7 migrations require this method
@@ -82,21 +84,22 @@ class MACAddressField(models.Field):
         defaults.update(kwargs)
         return super(MACAddressField, self).formfield(**defaults)
 
-    def get_prep_lookup(self, lookup_type, value):
-        # data is stored internally as integer so searching as string
-        # yield 0 result. for example: useful for search in admin.
-        if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
-            try:
-                return self.get_prep_value(value)
-            except AddrFormatError:
-                return None
-        elif lookup_type in ('in'):
-            try:
-                macs = []
-                for mac in value:
-                    macs += [self.get_prep_value(mac)]
-                return macs
-            except AddrFormatError:
-                return None
-        else:
-            raise TypeError('Lookup type %r not supported.' % lookup_type)
+
+class MACAddressFieldExact(Exact):
+    def get_prep_lookup(self):
+        try:
+            return self.lhs.output_field.get_prep_value(self.rhs)
+        except AddrFormatError:
+            return None
+
+
+class MACAddressFieldIExact(IExact):
+    def get_prep_lookup(self):
+        try:
+            return self.lhs.output_field.get_prep_value(self.rhs)
+        except AddrFormatError:
+            return None
+
+
+MACAddressField.register_lookup(MACAddressFieldExact)
+MACAddressField.register_lookup(MACAddressFieldIExact)
