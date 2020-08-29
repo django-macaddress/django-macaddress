@@ -85,7 +85,7 @@ class MACAddressField(models.Field):
         return super(MACAddressField, self).formfield(**defaults)
 
 
-class MACAddressFieldExact(Exact):
+class MACAddressFieldContains(Contains):
     def get_prep_lookup(self):
         try:
             return self.lhs.output_field.get_prep_value(self.rhs)
@@ -93,7 +93,7 @@ class MACAddressFieldExact(Exact):
             return None
 
 
-class MACAddressFieldIExact(IExact):
+class MACAddressFieldIContains(IContains):
     def get_prep_lookup(self):
         try:
             return self.lhs.output_field.get_prep_value(self.rhs)
@@ -101,5 +101,5 @@ class MACAddressFieldIExact(IExact):
             return None
 
 
-MACAddressField.register_lookup(MACAddressFieldExact)
-MACAddressField.register_lookup(MACAddressFieldIExact)
+MACAddressField.register_lookup(MACAddressFieldContains)
+MACAddressField.register_lookup(MACAddressFieldIContains)
