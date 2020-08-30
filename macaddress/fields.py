@@ -51,7 +51,10 @@ class MACAddressField(models.Field):
         if value is None:
             return None
         if not isinstance(value, EUI):
-            value = self.to_python(value)
+            try:
+                value = self.to_python(value)
+            except ValidationError:
+                return value
             if self.integer:
                 return int(value)
             return str(value)
