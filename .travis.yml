@@ -16,6 +16,8 @@ script: tox
 deploy:
   provider: pypi
   edge: true
+  distributions: "sdist bdist_wheel"
+  skip_existing: true
   on:
     branch: master
     tags: true
