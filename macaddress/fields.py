@@ -1,7 +1,7 @@
 import django
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.lookups import IContains, Contains
+from django.db.models.lookups import Exact, IExact, IContains, Contains
 
 from netaddr import EUI, AddrFormatError
 
@@ -99,7 +99,23 @@ class MACAddressFieldIContains(IContains):
             return self.lhs.output_field.get_prep_value(self.rhs)
         except AddrFormatError:
             return None
+    
+class MACAddressFieldExact(Exact):
+    def get_prep_lookup(self):
+        try:
+            return self.lhs.output_field.get_prep_value(self.rhs)
+        except AddrFormatError:
+            return None
+        
+class MACAddressFieldIExact(IExact):
+    def get_prep_lookup(self):
+        try:
+            return self.lhs.output_field.get_prep_value(self.rhs)
+        except AddrFormatError:
+            return None
 
 
 MACAddressField.register_lookup(MACAddressFieldContains)
 MACAddressField.register_lookup(MACAddressFieldIContains)
+MACAddressField.register_lookup(MACAddressFieldExact)
+MACAddressField.register_lookup(MACAddressFieldIExact)
