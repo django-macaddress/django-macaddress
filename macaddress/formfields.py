@@ -1,7 +1,7 @@
 from django.core.validators import EMPTY_VALUES
 from django.forms import Field
 from django.forms.utils import ValidationError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from netaddr import EUI, AddrFormatError
 
