@@ -1,8 +1,10 @@
 from importlib import import_module
 from netaddr import mac_unix, mac_eui48
 from warnings import warn
+
 from django.conf import settings
 
+from .version import __version__
 
 
 class mac_linux(mac_unix):
@@ -44,3 +46,6 @@ def format_mac(eui_obj, dialect):
             dialect = getattr(import_module(module), dialect_cls)
     eui_obj.dialect = dialect
     return str(eui_obj)
+
+
+VERSION = __version__  # synonym

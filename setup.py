@@ -1,7 +1,8 @@
 from os.path import dirname, join
 from setuptools import setup
 
-version = "1.8.0"
+from macaddress.version import __version__ as version
+
 
 def read(fname):
     return open(join(dirname(__file__), fname)).read()
