@@ -1,10 +1,10 @@
-import os
-from setuptools import setup, find_packages
+from os.path import dirname, join
+from setuptools import setup
 
 version = "1.8.0"
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(join(dirname(__file__), fname)).read()
 
 setup(
     name="django-macaddress",
