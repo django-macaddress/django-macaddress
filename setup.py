@@ -19,7 +19,6 @@ setup(
     maintainer='Arun Karunagath',
     maintainer_email='the1.arun@gmail.com',
     packages=['macaddress', 'macaddress.tests'],
-    install_requires=['netaddr'],
     tests_require=['Django'],
     test_suite="runtests.runtests",
     classifiers=[
@@ -31,10 +30,13 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Topic :: Internet :: WWW/HTTP',
     ]
 )
