@@ -8,7 +8,7 @@ authors = [{name="Ryan Nowakowski", email="tubaman@fattuba.com"}]
 maintainers = [{name="Arun Karunagath", email="the1.arun@gmail.com"}]
 description = "MAC address model and form fields for Django apps."
 readme = "README.rst"
-license = "BSD"
+license = {text = "BSD"}
 dependencies = [
   "netaddr >= 1.3.0"
 ]
@@ -31,7 +31,7 @@ classifiers=[
     'Programming Language :: Python :: 3.13',
     'Topic :: Internet :: WWW/HTTP',
 ]
-dynamic = ['long_description', "version"]
+dynamic = ["version"]
 
 [project.optional-dependencies]
 test = ["Django>=2.2"]
@@ -62,5 +62,4 @@ Django = ">=2.2"
 packages=['django_macaddress', 'django_macaddress.tests']
 
 [tool.setuptools.dynamic]
-long_description = {file = ["README.rst"]}
 version = {attr = "django_macaddress.__version__"}
