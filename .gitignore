@@ -12,3 +12,4 @@ cscope.*
 .tox/
 /*travis.log
 /*input.txt
+.coverage
