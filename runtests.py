@@ -18,8 +18,8 @@ SETTINGS = {
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.admin',
-        'macaddress.tests',
-        'macaddress',
+        'django_macaddress.tests',
+        'django_macaddress',
     ),
     'SITE_ID': 1,
     'SECRET_KEY': 'this-is-just-for-tests-so-not-that-secret',
@@ -67,7 +67,7 @@ def runtests():
         django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=True, failfast=False)
-    apps = ['macaddress', ]
+    apps = ['django_macaddress', ]
     failures = test_runner.run_tests(apps)
     sys.exit(failures)
 

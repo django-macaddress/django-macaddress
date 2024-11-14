@@ -25,7 +25,7 @@ def default_dialect(eui_obj=None):
         if MACAddressField.dialect: # Remove this "if" statement at v1.4
             warn(
                 "The set_dialect class method on MACAddressField has been deprecated, in favor of the default_dialect "
-                "utility function and settings.MACADDRESS_DEFAULT_DIALECT. See macaddress.__init__.py source or the "
+                "utility function and settings.MACADDRESS_DEFAULT_DIALECT. See django_macaddress.__init__.py source or the "
                 "project README for more information.",
                 DeprecationWarning,
             )

@@ -39,7 +39,7 @@ class MACAddressField(models.Field):
         '''
         warnings.warn(
             "The set_dialect method has been deprecated, in favor of the default_dialect utility function and "
-            " settings.MACADDRESS_DEFAULT_DIALECT. See macaddress.__init__.py source or the project README for "
+            " settings.MACADDRESS_DEFAULT_DIALECT. See django_macaddress.__init__.py source or the project README for "
             "more information.",
             DeprecationWarning,
         )

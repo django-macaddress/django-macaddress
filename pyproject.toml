@@ -46,7 +46,10 @@ universal = 1
 # TODO: remove `tool.poetry` section and child sections after Poetry 2.0.0 with
 #       support for `project` section is released
 [tool.poetry]
-package-mode = false
+name = "django-macaddress"
+version = "1.8.0"
+authors = ["Ryan Nowakowski <tubaman@fattuba.com>"]
+description = "MAC address model and form fields for Django apps."
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -56,8 +59,8 @@ netaddr = "^1.3.0"
 Django = ">=2.2"
 
 [tool.setuptools]
-packages=['macaddress', 'macaddress.tests']
+packages=['django_macaddress', 'django_macaddress.tests']
 
 [tool.setuptools.dynamic]
 long_description = {file = ["README.rst"]}
-version = {attr = "macaddress.__version__"}
+version = {attr = "django_macaddress.__version__"}
