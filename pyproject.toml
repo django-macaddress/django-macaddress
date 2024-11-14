@@ -62,4 +62,4 @@ Django = ">=2.2"
 packages=['django_macaddress', 'django_macaddress.tests']
 
 [tool.setuptools.dynamic]
-version = {attr = "django_macaddress.__version__"}
+version = {attr = "django_macaddress.version.__version__"}
