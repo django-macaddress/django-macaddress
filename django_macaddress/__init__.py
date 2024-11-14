@@ -1,8 +1,9 @@
 from importlib import import_module
-from netaddr import mac_unix, mac_eui48
 from warnings import warn
 
 from django.conf import settings
+
+from netaddr import mac_unix, mac_eui48
 
 from .version import __version__
 

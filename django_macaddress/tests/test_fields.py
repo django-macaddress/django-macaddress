@@ -2,8 +2,6 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.db import transaction
 
-from netaddr.core import AddrFormatError
-
 from .models import NetworkThingy
 
 
