@@ -10,3 +10,5 @@ cscope.*
 /django_macaddress.egg-info
 .eggs
 .tox/
+/*travis.log
+/*input.txt
