@@ -1,14 +1,13 @@
-import django
+from warnings import warn
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
 from netaddr import EUI, AddrFormatError
 
+from . import default_dialect
 from .formfields import MACAddressField as MACAddressFormField
 
-from . import default_dialect, format_mac, mac_linux
-
-import warnings
 
 class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
@@ -37,9 +36,9 @@ class MACAddressField(models.Field):
         Class new_dialect_clazz should (finally) extend
         netaddr.strategy.eui48.mac_eui48.
         '''
-        warnings.warn(
+        warn(
             "The set_dialect method has been deprecated, in favor of the default_dialect utility function and "
-            " settings.MACADDRESS_DEFAULT_DIALECT. See macaddress.__init__.py source or the project README for "
+            " settings.MACADDRESS_DEFAULT_DIALECT. See django_macaddress.__init__.py source or the project README for "
             "more information.",
             DeprecationWarning,
         )

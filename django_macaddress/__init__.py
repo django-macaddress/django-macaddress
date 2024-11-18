@@ -1,9 +1,12 @@
+from importlib import import_module
+from warnings import warn
+
 from django.conf import settings
 
 from netaddr import mac_unix, mac_eui48
 
-import importlib
-import warnings
+from .version import __version__
+
 
 class mac_linux(mac_unix):
     """MAC format with zero-padded all upper-case hex and colon separated"""
@@ -17,13 +20,13 @@ def default_dialect(eui_obj=None):
     from .fields import MACAddressField # Remove import at v1.4
     if hasattr(settings, 'MACADDRESS_DEFAULT_DIALECT') and not MACAddressField.dialect:
         module, dialect_cls = settings.MACADDRESS_DEFAULT_DIALECT.split('.')
-        dialect = getattr(importlib.import_module(module), dialect_cls, mac_linux)
+        dialect = getattr(import_module(module), dialect_cls, mac_linux)
         return dialect
     else:
         if MACAddressField.dialect: # Remove this "if" statement at v1.4
-            warnings.warn(
+            warn(
                 "The set_dialect class method on MACAddressField has been deprecated, in favor of the default_dialect "
-                "utility function and settings.MACADDRESS_DEFAULT_DIALECT. See macaddress.__init__.py source or the "
+                "utility function and settings.MACADDRESS_DEFAULT_DIALECT. See django_macaddress.__init__.py source or the "
                 "project README for more information.",
                 DeprecationWarning,
             )
@@ -41,18 +44,9 @@ def format_mac(eui_obj, dialect):
     if not isinstance(dialect, mac_eui48):
         if isinstance(dialect, str):
             module, dialect_cls = dialect.split('.')
-            dialect = getattr(importlib.import_module(module), dialect_cls)
+            dialect = getattr(import_module(module), dialect_cls)
     eui_obj.dialect = dialect
     return str(eui_obj)
 
 
-from pkg_resources import get_distribution, DistributionNotFound
-import os.path
-
-try:
-    _dist = get_distribution('django-macaddress')
-except DistributionNotFound:
-    __version__ = 'Please install this project with setup.py'
-else:
-    __version__ = _dist.version
-VERSION = __version__   # synonym
+VERSION = __version__  # synonym
