@@ -8,7 +8,7 @@ from netaddr import EUI, AddrFormatError
 
 class MACAddressField(Field):
     default_error_messages = {
-        'invalid': _('Enter a valid MAC Address.'),
+        "invalid": _("Enter a valid MAC Address."),
     }
 
     def clean(self, value):
@@ -22,7 +22,5 @@ class MACAddressField(Field):
         try:
             value = EUI(str(value), version=48)
         except (ValueError, TypeError, AddrFormatError):
-            raise ValidationError(self.error_messages['invalid'])
+            raise ValidationError(self.error_messages["invalid"])
         return value
-
-
