@@ -3,6 +3,7 @@ import sys
 
 import django
 from django.conf import settings
+from django.test.utils import get_runner
 
 
 SETTINGS = {
@@ -18,7 +19,6 @@ SETTINGS = {
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.admin',
-        'macaddress.tests',
         'macaddress',
     ),
     'SITE_ID': 1,
@@ -37,38 +37,25 @@ SETTINGS = {
             }
         }
     ],
+    'MIDDLEWARE': (
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+    ),
+    'DEFAULT_AUTO_FIELD': 'django.db.models.AutoField',
 }
-
-if django.VERSION < (2, 2):
-    SETTINGS['MIDDLEWARE_CLASSES'] = (
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-    )
-else:
-    SETTINGS['MIDDLEWARE'] = (
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-    )
-
-
 
 if not settings.configured:
     settings.configure(**SETTINGS)
 
 
 
-from django.test.utils import get_runner
-
 
 def runtests():
-    if hasattr(django, 'setup'):
-        django.setup()
+    django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner(verbosity=1, interactive=True, failfast=False)
-    apps = ['macaddress', ]
-    failures = test_runner.run_tests(apps)
+    failures = test_runner.run_tests(['macaddress'])
     sys.exit(failures)
 
 
