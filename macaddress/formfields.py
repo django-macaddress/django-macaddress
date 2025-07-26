@@ -2,7 +2,6 @@ from django.core.validators import EMPTY_VALUES
 from django.forms import Field
 from django.forms.utils import ValidationError
 from django.utils.translation import gettext_lazy as _
-
 from netaddr import EUI, AddrFormatError
 
 
@@ -16,7 +15,7 @@ class MACAddressField(Field):
         Validates that EUI() can be called on the input. Returns the result
         of EUI(). Returns None for empty values.
         """
-        value = super(MACAddressField, self).clean(value)
+        value = super().clean(value)
         if value in EMPTY_VALUES:
             return None
         try:

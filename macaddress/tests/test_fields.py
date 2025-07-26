@@ -1,7 +1,7 @@
+import pytest
 from django.core.exceptions import ValidationError
-from django.test import TestCase
 from django.db import transaction
-
+from django.test import TestCase
 
 from .models import NetworkThingy
 
@@ -12,15 +12,15 @@ class MACAddressFieldTestCase(TestCase):
         x = NetworkThingy(mac=mac_example)
         x.save()
         qm = NetworkThingy.objects
-        self.assertEqual(x.mac, mac_example)
-        self.assertEqual(qm.get(mac=mac_example).mac, mac_example)
-        self.assertEqual(qm.all().count(), 1)
+        assert x.mac == mac_example
+        assert qm.get(mac=mac_example).mac == mac_example
+        assert qm.all().count() == 1
 
     def test_insert_invalid_macaddress(self):
         invalid_mac = "XX"
         with transaction.atomic():
             x = NetworkThingy()
-            with self.assertRaises(ValidationError):
-                x.mac = invalid_mac
+            x.mac = invalid_mac
+            with pytest.raises(ValidationError):
                 x.save()
-        self.assertEqual(NetworkThingy.objects.all().count(), 0)
+        assert NetworkThingy.objects.all().count() == 0
