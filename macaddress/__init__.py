@@ -3,6 +3,7 @@ from django.conf import settings
 from netaddr import mac_unix, mac_eui48
 
 import importlib
+from importlib.metadata import version, PackageNotFoundError
 import warnings
 
 class mac_linux(mac_unix):
@@ -46,13 +47,9 @@ def format_mac(eui_obj, dialect):
     return str(eui_obj)
 
 
-from pkg_resources import get_distribution, DistributionNotFound
-import os.path
-
 try:
-    _dist = get_distribution('django-macaddress')
-except DistributionNotFound:
+    __version__ = version('django-macaddress')
+except PackageNotFoundError:
     __version__ = 'Please install this project with setup.py'
-else:
-    __version__ = _dist.version
+
 VERSION = __version__   # synonym
