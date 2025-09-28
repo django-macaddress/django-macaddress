@@ -1,4 +1,3 @@
-import django
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -6,9 +5,10 @@ from netaddr import EUI, AddrFormatError
 
 from .formfields import MACAddressField as MACAddressFormField
 
-from . import default_dialect, format_mac, mac_linux
+from . import default_dialect
 
 import warnings
+
 
 class MACAddressField(models.Field):
     description = "A MAC address validated by netaddr.EUI"
@@ -16,27 +16,28 @@ class MACAddressField(models.Field):
     dialect = None
 
     def __init__(self, *args, **kwargs):
-        self.integer = kwargs.pop('integer', True)
-        if not self.integer: # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
-            kwargs['max_length'] = kwargs.get('max_length', 17)
+        self.integer = kwargs.pop("integer", True)
+        if (
+            not self.integer
+        ):  # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
+            kwargs["max_length"] = kwargs.get("max_length", 17)
         super(MACAddressField, self).__init__(*args, **kwargs)
 
-
     def deconstruct(self):
-        ''' Django 1.7 migrations require this method
-            https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#field-deconstruction
-        '''
+        """Django 1.7 migrations require this method
+        https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#field-deconstruction
+        """
         name, path, args, kwargs = super(MACAddressField, self).deconstruct()
-        kwargs['integer'] = self.integer
+        kwargs["integer"] = self.integer
         return name, path, args, kwargs
 
     @classmethod
     def set_dialect(cls, new_dialect_clazz):
-        ''' Setting dialect for EUI (MAC addresses) globally to this Field
+        """Setting dialect for EUI (MAC addresses) globally to this Field
         class.
         Class new_dialect_clazz should (finally) extend
         netaddr.strategy.eui48.mac_eui48.
-        '''
+        """
         warnings.warn(
             "The set_dialect method has been deprecated, in favor of the default_dialect utility function and "
             " settings.MACADDRESS_DEFAULT_DIALECT. See macaddress.__init__.py source or the project README for "
@@ -60,8 +61,8 @@ class MACAddressField(models.Field):
 
     def get_internal_type(self):
         if self.integer:
-            return 'BigIntegerField'
-        return 'CharField'
+            return "BigIntegerField"
+        return "CharField"
 
     def from_db_value(self, value, expression, connection):
         return self.to_python(value)
@@ -78,19 +79,19 @@ class MACAddressField(models.Field):
             raise ValidationError("This value must be a valid MAC address.")
 
     def formfield(self, **kwargs):
-        defaults = {'form_class': MACAddressFormField}
+        defaults = {"form_class": MACAddressFormField}
         defaults.update(kwargs)
         return super(MACAddressField, self).formfield(**defaults)
 
     def get_prep_lookup(self, lookup_type, value):
         # data is stored internally as integer so searching as string
         # yield 0 result. for example: useful for search in admin.
-        if lookup_type in ('exact', 'iexact', 'icontains', 'icontains'):
+        if lookup_type in ("exact", "iexact", "icontains", "icontains"):
             try:
                 return self.get_prep_value(value)
             except AddrFormatError:
                 return None
-        elif lookup_type in ('in'):
+        elif lookup_type in ("in"):
             try:
                 macs = []
                 for mac in value:
@@ -99,4 +100,4 @@ class MACAddressField(models.Field):
             except AddrFormatError:
                 return None
         else:
-            raise TypeError('Lookup type %r not supported.' % lookup_type)
+            raise TypeError("Lookup type %r not supported." % lookup_type)
