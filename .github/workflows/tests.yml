@@ -25,4 +25,5 @@ jobs:
           pip install -U tox tox-gh-actions
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - run: pip install -U tox tox-gh-actions
       - run: tox
