@@ -1,3 +1,43 @@
 [tool.ruff]
 target-version = 'py311'
 line-length = 120
+
+[tool.ruff.lint]
+# See complete list : https://docs.astral.sh/ruff/rules/
+select = [
+    "F",     # pyflakes
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "I",     # isort
+    "YTT",   # flake8-2020
+    "B006",   # flake8-bugbear-mutable-argument-default
+    "B008",   # flake8-bugbear-function-call-in-default-argument (B008)
+    "A",     # flake8-builtins
+    "C4",    # flake8-comprehensions
+    "T10",   # flake8-debugger
+    "DJ",    # flake8-django
+    "EXE",   # flake8-executable
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "INP",   # flake8-no-pep420
+    "PIE",   # flake8-pie
+    "T20",   # flake8-print
+    "PYI",   # flake8-pyi
+    "PT",    # flake8-pytest-style
+    "SLOT",  # flake8-slots
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "SLF",   # flake8-self
+    "TCH",   # flake8-type-checking
+    "INT",   # flake8-gettext
+    "FLY",   # flynt
+    "NPY",   # numpy-specific rules
+    "AIR",   # airflow
+    "PERF",  # perflint
+    "UP",    # pyupgrade
+    "FURB",  # refurb
+    "PD",    # pandas-vet
+]

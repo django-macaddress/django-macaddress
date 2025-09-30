@@ -1,13 +1,11 @@
+import warnings
+
 from django.core.exceptions import ValidationError
 from django.db import models
-
 from netaddr import EUI, AddrFormatError
 
-from .formfields import MACAddressField as MACAddressFormField
-
 from . import default_dialect
-
-import warnings
+from .formfields import MACAddressField as MACAddressFormField
 
 
 class MACAddressField(models.Field):
@@ -21,13 +19,13 @@ class MACAddressField(models.Field):
             not self.integer
         ):  # If storing MAC address as string, set max_length to default (17) or use supplied kwarg value.
             kwargs["max_length"] = kwargs.get("max_length", 17)
-        super(MACAddressField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def deconstruct(self):
         """Django 1.7 migrations require this method
         https://docs.djangoproject.com/en/dev/howto/custom-model-fields/#field-deconstruction
         """
-        name, path, args, kwargs = super(MACAddressField, self).deconstruct()
+        name, path, args, kwargs = super().deconstruct()
         kwargs["integer"] = self.integer
         return name, path, args, kwargs
 
@@ -81,7 +79,7 @@ class MACAddressField(models.Field):
     def formfield(self, **kwargs):
         defaults = {"form_class": MACAddressFormField}
         defaults.update(kwargs)
-        return super(MACAddressField, self).formfield(**defaults)
+        return super().formfield(**defaults)
 
     def get_prep_lookup(self, lookup_type, value):
         # data is stored internally as integer so searching as string
@@ -100,4 +98,4 @@ class MACAddressField(models.Field):
             except AddrFormatError:
                 return None
         else:
-            raise TypeError("Lookup type %r not supported." % lookup_type)
+            raise TypeError(f"Lookup type {lookup_type!r} not supported.")
