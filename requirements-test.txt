@@ -2,4 +2,4 @@ coverage
 coveralls
 mock>=1.0.1
 pytest
-tox>=1.7.0
+tox>=4.56.1
